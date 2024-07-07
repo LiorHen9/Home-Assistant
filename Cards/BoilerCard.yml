@@ -1,0 +1,29 @@
+type: custom:stack-in-card
+layout_type: custom:grid-layout
+mode: horizontal
+layout:
+  grid-template-columns: 80% 10% 10%
+  margin: 0px 0px 0px 0px
+cards:
+  - type: custom:mushroom-number-card
+    entity: input_number.time_until_boiler_turned_off
+    icon_type: none
+    layout: vertical
+    primary_info: state
+    secondary_info: none
+    card_mod:
+      style: |
+        ha-card {
+          border: none
+        }
+  - type: button
+    show_name: true
+    show_icon: true
+    tap_action:
+      action: toggle
+    entity: switch.boiler
+    card_mod:
+      style: |
+        ha-card {
+          border: none
+        }
