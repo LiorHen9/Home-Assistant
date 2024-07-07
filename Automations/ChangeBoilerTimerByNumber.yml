@@ -1,0 +1,36 @@
+alias: ChangeBoilerTimerByNumber
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - input_number.time_until_boiler_turned_off
+condition: []
+action:
+  - if:
+      - condition: state
+        entity_id: input_number.time_until_boiler_turned_off
+        state: "0.0"
+    then:
+      - service: timer.cancel
+        metadata: {}
+        data: {}
+        target:
+          entity_id: timer.turn_boiler_off
+      - type: turn_off
+        device_id: 9b6ce5000602c3b1f6f1acb18139c50d
+        entity_id: 7f1fa465a76db1851fc5cce552d8ee16
+        domain: switch
+    else:
+      - service: timer.start
+        target:
+          entity_id:
+            - timer.turn_boiler_off
+        data:
+          duration: >-
+            00:{{ states('input_number.time_until_boiler_turned_off') | int
+            }}:00
+      - type: turn_on
+        device_id: 9b6ce5000602c3b1f6f1acb18139c50d
+        entity_id: 7f1fa465a76db1851fc5cce552d8ee16
+        domain: switch
+mode: single

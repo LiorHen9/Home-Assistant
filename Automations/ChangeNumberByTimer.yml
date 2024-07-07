@@ -1,0 +1,21 @@
+alias: ChangeNumberByTimer
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - timer.turn_boiler_off
+condition: []
+action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.time_until_boiler_turned_off
+    data:
+      value: >
+        {% set timer = states.timer.turn_boiler_off %} {% if timer and
+        timer.state == 'active' %}
+          {% set remaining = as_timestamp(timer.attributes.finishes_at) - now().timestamp() %}
+          {{ (remaining / 60) | int }}
+        {% else %}
+          0
+        {% endif %}
+mode: single

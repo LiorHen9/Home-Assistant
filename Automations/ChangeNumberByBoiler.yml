@@ -1,0 +1,34 @@
+alias: ChangeNumberByBoiler
+description: ""
+trigger:
+  - platform: device
+    type: changed_states
+    device_id: 9b6ce5000602c3b1f6f1acb18139c50d
+    entity_id: 7f1fa465a76db1851fc5cce552d8ee16
+    domain: switch
+condition: []
+action:
+  - if:
+      - condition: device
+        type: is_on
+        device_id: 9b6ce5000602c3b1f6f1acb18139c50d
+        entity_id: 7f1fa465a76db1851fc5cce552d8ee16
+        domain: switch
+    then:
+      - if:
+          - condition: state
+            entity_id: input_number.time_until_boiler_turned_off
+            state: "0.0"
+        then:
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.time_until_boiler_turned_off
+            data:
+              value: 60
+    else:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.time_until_boiler_turned_off
+        data:
+          value: 0
+mode: single
